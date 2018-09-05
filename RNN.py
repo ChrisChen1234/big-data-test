@@ -73,8 +73,8 @@ model.add(CuDNNGRU(5,
 
 
 model.add(Dense(1, W_regularizer=l2(0.01)))
-adam = keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
-model.compile(optimizer=adam,loss='mse')
+Nadam = keras.optimizers.Nadam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None,schedule_decay=0.004)
+model.compile(optimizer=Nadam,loss='mse')
 
 
 # In[17]:
@@ -89,7 +89,7 @@ model.fit(X_train, Y_train, epochs=500, batch_size=5)
 test_data = model.predict(X_test, batch_size=5)
 print ("test_data = \n",test_data,'\n\n')
 diff1 = abs(test_data-Y_test)
-print ("test_Deviation = \n",diff1,'\n')
+#print ("test_Deviation = \n",diff1,'\n')
 diff1_sqr = diff1**2
 Test_RMSE =( diff1_sqr.sum()/10 )**0.5
 print("Test_RMSE = \n",Test_RMSE)
@@ -99,11 +99,11 @@ print("Test_RMSE = \n",Test_RMSE)
 
 
 train_data = model.predict(X_train, batch_size=5)
-print ("train_data = \n",train_data,'\n\n')
+#print ("train_data = \n",train_data,'\n\n')
 diff2 = abs(train_data-Y_train)
 diff2_sqr = diff2**2
 Train_RMSE =( diff2_sqr.sum()/30 )**0.5
-Train_RMSE_test = (abs(train_data-Y_train)**2).sum()**0.5
+Train_RMSE_test = (abs(train_data-Y_train)**2).sum()/30**0.5
 print("Train_RMSE = ",Train_RMSE)
 print("Train_RMSE_test = ", Train_RMSE_test)
 
